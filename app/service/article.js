@@ -10,14 +10,13 @@ class ArticleService extends Service {
     const pageSize = Number(params.pageSize);
     const queryParams = [
       { title: { $regex: new RegExp(params.title, 'i') } },
-      { flag: true },
     ];
     if (params.startDate) {
       queryParams.push({ time: { $gt: params.startDate, $lte: params.endDate } });
     }
     const res = await this.ctx.model.Article.find({
       $and: queryParams,
-    }, { flag: 0 }).limit(pageSize)
+    }).limit(pageSize)
       .skip((page - 1) * pageSize)
       .exec();
     return res;
@@ -27,7 +26,6 @@ class ArticleService extends Service {
   async count(params) {
     const queryParams = [
       { title: { $regex: new RegExp(params.title, 'i') } },
-      { flag: true },
     ];
     if (params.endDate) {
       queryParams.push({ time: { $gt: params.startDate, $lte: params.endDate } });
