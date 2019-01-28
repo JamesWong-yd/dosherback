@@ -36,17 +36,9 @@ class ArticleController extends Controller {
   async create() {
     const ctx = this.ctx;
     const rule = {
-      title: {
-        type: 'string',
-        required: true,
-      },
-      content: {
-        type: 'string',
-        required: true,
-      },
-      flag: {
-        type: 'boolean',
-      },
+      title: { type: 'string', required: true },
+      content: { type: 'string', required: true },
+      flag: { type: 'boolean' },
     };
     // validate rule
     try {
@@ -73,10 +65,7 @@ class ArticleController extends Controller {
     const ctx = this.ctx;
     // validate rule
     const rule = {
-      id: {
-        type: 'string',
-        required: true,
-      },
+      id: { type: 'string', required: true },
     };
     // validate params
     try {
@@ -94,22 +83,15 @@ class ArticleController extends Controller {
     };
     ctx.status = 200;
   }
+
   // update one   /
   async update() {
     const ctx = this.ctx;
     const rule = {
-      title: {
-        type: 'string',
-        required: true,
-      },
-      content: {
-        type: 'string',
-        required: true,
-      },
-      flag: {
-        type: 'boolean',
-        required: true,
-      },
+      title: { type: 'string', required: true },
+      content: { type: 'string', required: true },
+      flag: { type: 'boolean', required: true },
+      totop: { type: 'boolean', required: true },
     };
     // validate rule
     try {
@@ -137,15 +119,73 @@ class ArticleController extends Controller {
     };
     ctx.status = 201;
   }
+
+  // updated flag
+  async updatedFlag() {
+    const ctx = this.ctx;
+    const body = ctx.request.body;
+    try {
+      ctx.validate({ flag: { type: 'boolean' } }, body);
+      ctx.validate({
+        id: {
+          type: 'string',
+          required: true,
+        },
+      }, ctx.params);
+    } catch (error) {
+      ctx.logger.warn(error.errors);
+      ctx.body = { state: false, msg: error.errors };
+      return;
+    }
+    // updated database
+    const updatedFlagArticle = await ctx.service.article.update(
+      { id: ctx.params.id },
+      { flag: body.flag }
+    );
+    // return front
+    ctx.body = {
+      data: updatedFlagArticle,
+      state: 'success',
+    };
+    ctx.status = 201;
+  }
+
+  // update totop
+  async updatedTotop() {
+    const ctx = this.ctx;
+    const body = ctx.request.body;
+    try {
+      ctx.validate({ totop: { type: 'boolean' } }, body);
+      ctx.validate({
+        id: {
+          type: 'string',
+          required: true,
+        },
+      }, ctx.params);
+    } catch (error) {
+      ctx.logger.warn(error.errors);
+      ctx.body = { state: false, msg: error.errors };
+      return;
+    }
+    // updated database
+    const updatedFlagArticle = await ctx.service.article.update(
+      { id: ctx.params.id },
+      { totop: body.totop }
+    );
+    // return front
+    ctx.body = {
+      data: updatedFlagArticle,
+      state: 'success',
+    };
+    ctx.status = 201;
+  }
+
   // destroy one
   async destroy() {
     const ctx = this.ctx;
     // validate
     const rule = {
-      id: {
-        type: 'string',
-        required: true,
-      },
+      id: { type: 'string', required: true },
     };
     // validate params
     try {

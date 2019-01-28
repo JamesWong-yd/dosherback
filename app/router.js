@@ -14,4 +14,6 @@ module.exports = app => {
    *  deleted  /:id     delete
    */
   router.resources('article', '/api/article', controller.article);
+  router.patch('/api/article/:id/flag', controller.article.updatedFlag);
+  router.patch('/api/article/:id/totop', controller.article.updatedTotop);
 };
