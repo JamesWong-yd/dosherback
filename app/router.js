@@ -16,4 +16,6 @@ module.exports = app => {
   router.resources('article', '/api/article', controller.article);
   router.patch('/api/article/:id/flag', controller.article.updatedFlag);
   router.patch('/api/article/:id/totop', controller.article.updatedTotop);
+  // font
+  router.resources('font', '/api/font', controller.font);
 };

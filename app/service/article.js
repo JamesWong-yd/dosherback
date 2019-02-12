@@ -14,6 +14,9 @@ class ArticleService extends Service {
     if (params.startDate) {
       queryParams.push({ time: { $gt: params.startDate, $lte: params.endDate } });
     }
+    if (params.flag) {
+      queryParams.push({ flag: true });
+    }
     const res = await this.ctx.model.Article.find({
       $and: queryParams,
     }).limit(pageSize)
